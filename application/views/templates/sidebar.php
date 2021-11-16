@@ -30,7 +30,7 @@
 			<div class="sidebar-menu">
 				<ul id="accordion-menu">
 					<li>
-						<a href="<?= base_url('dashboard'); ?>" class="dropdown-toggle no-arrow <?php if($currentUrl == base_url('dashboard')){echo $active; }?>">
+						<a href="#" class="dropdown-toggle no-arrow <?php if($currentUrl == base_url('dashboard')){echo $active; }?>">
 							<span class="micon dw dw-home"></span><span class="mtext">Dashboard</span>
 						</a>
 					</li>
