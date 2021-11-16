@@ -181,6 +181,12 @@ class Manageobj extends MX_Controller {
     }
 
 
+    public function updatelinenum_down()
+    {
+        $this->mgrobj->updatelinenum_down();
+    }
+
+
 }
 
 /* End of file Controllername.php */

@@ -541,7 +541,7 @@ class Manageobj_model extends CI_Model {
             its_template_master.tp_mas_datetime
             FROM
             its_template_master
-            WHERE tp_mas_name = '$templatename' ");
+            WHERE tp_mas_name = '$templatename' ORDER BY tp_mas_linenum ASC");
             $output ='';
             foreach($sql->result() as $key => $val){
                 if($val->tp_mas_arraykey == "title"){
@@ -901,7 +901,7 @@ class Manageobj_model extends CI_Model {
             its_template_master.tp_mas_arraykey
             FROM
             its_template_master
-            WHERE tp_mas_name = '$templatename' ");
+            WHERE tp_mas_name = '$templatename' ORDER BY tp_mas_linenum ASC");
 
 
             // Check linenum Up
@@ -946,6 +946,131 @@ class Manageobj_model extends CI_Model {
 
             echo json_encode($arrayOutput);
         }
+    }
+
+
+    public function updatelinenum_up()
+    {
+        if($this->input->post("data_linenum") != ""){
+            $data_linenum = $this->input->post("data_linenum");
+            $templatename = $this->input->post("data_template_name");
+
+            // Query all linenum
+            $queryAllLinenum = $this->db->query("SELECT
+            its_template_master.tp_mas_autoid,
+            its_template_master.tp_mas_name,
+            its_template_master.tp_mas_linenum,
+            its_template_master.tp_mas_inputname,
+            its_template_master.tp_mas_title_text,
+            its_template_master.tp_mas_arraykey
+            FROM
+            its_template_master
+            WHERE tp_mas_name = '$templatename' ORDER BY tp_mas_linenum ASC");
+
+            // Fetch data to array
+            foreach($queryAllLinenum->result() as $rs){
+                $linenumArray[] = $rs->tp_mas_linenum;
+            }
+
+            // Search position linenum in linenum array
+            //return array position
+            $linenumPosition = array_search($data_linenum , $linenumArray);
+
+            // make up linenum
+            $up = $linenumPosition-1;
+
+            // Use Function for move linenum
+            $moveUp = moveElementInArray($linenumArray, $linenumPosition, $up);
+            $i =0;
+            foreach($queryAllLinenum->result() as $rs){
+                $arUp = array(
+                    "tp_mas_linenum" => $moveUp[$i],
+                );
+                $this->db->where("tp_mas_autoid" , $rs->tp_mas_autoid);
+                $this->db->update("its_template_master" , $arUp);
+                $i++;
+            }
+
+            $output = array(
+                "msg" => "เลื่อนตำแหน่งขึ้นเรียบร้อยแล้ว",
+                "status" => "Move Linenum Success",
+                "now" => $linenumPosition,
+                "to" => $up ,
+                "linenumArray" => $moveUp
+            );
+            
+        }else{
+            $output = array(
+                "msg" => "เลื่อนตำแหน่งไม่สำเร็จ",
+                "status" => "Move Linenum Not Success"
+            );
+        }
+
+        echo json_encode($output);
+    }
+
+
+
+
+
+    public function updatelinenum_down()
+    {
+        if($this->input->post("data_linenum") != ""){
+            $data_linenum = $this->input->post("data_linenum");
+            $templatename = $this->input->post("data_template_name");
+
+            // Query all linenum
+            $queryAllLinenum = $this->db->query("SELECT
+            its_template_master.tp_mas_autoid,
+            its_template_master.tp_mas_name,
+            its_template_master.tp_mas_linenum,
+            its_template_master.tp_mas_inputname,
+            its_template_master.tp_mas_title_text,
+            its_template_master.tp_mas_arraykey
+            FROM
+            its_template_master
+            WHERE tp_mas_name = '$templatename' ORDER BY tp_mas_linenum ASC");
+
+            // Fetch data to array
+            foreach($queryAllLinenum->result() as $rs){
+                $linenumArray[] = $rs->tp_mas_linenum;
+            }
+
+            // Search position linenum in linenum array
+            //return array position
+            $linenumPosition = array_search($data_linenum , $linenumArray);
+
+            // make up linenum
+            $up = $linenumPosition+1;
+
+            // Use Function for move linenum
+            $moveDown = moveElementInArray($linenumArray, $linenumPosition, $up);
+            $i =0;
+            foreach($queryAllLinenum->result() as $rs){
+                $arDown = array(
+                    "tp_mas_linenum" => $moveDown[$i],
+                );
+                $this->db->where("tp_mas_autoid" , $rs->tp_mas_autoid);
+                $this->db->update("its_template_master" , $arDown);
+                $i++;
+            }
+
+            $output = array(
+                "msg" => "เลื่อนตำแหน่งลงเรียบร้อยแล้ว",
+                "status" => "Move Linenum Success",
+                "now" => $linenumPosition,
+                "to" => $up ,
+                "linenumArray" => $moveDown
+            );
+            
+        }else{
+            $output = array(
+                "msg" => "เลื่อนตำแหน่งไม่สำเร็จ",
+                "status" => "Move Linenum Not Success"
+            );
+        }
+
+        echo json_encode($output);
     }
     
 

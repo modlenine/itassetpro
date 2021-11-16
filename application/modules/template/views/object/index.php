@@ -371,7 +371,6 @@
             </div>
 
             <div class="modal-header subhead">
-                <button type="button" id="btn_saveElementOrder_vtem" class="btn btn-success btn-sm mr-2">Save</button>
                 <button type="button" id="btn_closeElementOrder_vtem" class="btn btn-danger btn-sm btn_closeElementOrder_vtem" data-dismiss="modal">Close</button>
             </div>
             
@@ -690,13 +689,19 @@
 
             loadElementOrderlist(data_template_name);
         });
+        $(document).on('click' , '.btn_closeElementOrder_vtem' , function(){
+            $('#element_order_vtem').modal('hide');
+            $('#viewtemplate_modal').modal('show');
+
+            viewtemplate(data_template_name);
+        });
 
 
         $(document).on('click','.iconup',function(){
             const data_id = $(this).attr("data_id");
             const data_linenum = $(this).attr("data_linenum");
 
-            updatelinenum_up(data_id , data_linenum);
+            updatelinenum_up(data_linenum , data_template_name);
         });
 
 
@@ -704,7 +709,7 @@
             const data_id = $(this).attr("data_id");
             const data_linenum = $(this).attr("data_linenum");
 
-            updatelinenum_down(data_id , data_linenum);
+            updatelinenum_down(data_linenum , data_template_name);
         });
 
 
@@ -1137,18 +1142,36 @@
     }
 
 
-    function updatelinenum_up(data_id , data_linenum)
+    function updatelinenum_up(data_linenum , data_template_name)
     {
         $.ajax({
             url:"/intsys/itassetpro/template/manageobj/updatelinenum_up",
-            mehtod:"POST",
+            method:"POST",
             data:{
-                data_id:data_id,
-                data_linenum:data_linenum
+                data_linenum:data_linenum,
+                data_template_name:data_template_name
             },
             beforeSend:function(){},
             success:function(res){
                 console.log(JSON.parse(res));
+                loadElementOrderlist(data_template_name);
+            }
+        });
+    }
+
+    function updatelinenum_down(data_linenum , data_template_name)
+    {
+        $.ajax({
+            url:"/intsys/itassetpro/template/manageobj/updatelinenum_down",
+            method:"POST",
+            data:{
+                data_linenum:data_linenum,
+                data_template_name:data_template_name
+            },
+            beforeSend:function(){},
+            success:function(res){
+                console.log(JSON.parse(res));
+                loadElementOrderlist(data_template_name);
             }
         });
     }
