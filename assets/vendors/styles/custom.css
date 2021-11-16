@@ -1,0 +1,495 @@
+/* Input null Class */
+.inputNull{
+	border:2px solid #e20707;
+	color:#e20707 !important;
+}
+.inputNull:focus , .inputNull:active{
+	border:2px solid #e20707;
+	color:#e20707 !important;
+}
+
+/* Input success class */
+.inputSuccess{
+	border:2px solid #28a745;
+	color:#28a745 !important;
+}
+.inputSuccess:focus , .inputNull:active{
+	border:2px solid #28a745;
+	color:#28a745 !important;
+}
+
+/* Control head modal */
+.subhead{
+    justify-content:left !important;
+}
+
+/* Control Navbar */
+.textUsername{
+	font-size:14px;
+}
+
+
+
+/* Control icon */
+.del_fi_trash{
+	color:#dc3545;
+	font-size:22px;
+	cursor: pointer;
+	transition: transform .2s !important;
+}
+.del_fi_trash:hover{
+	color: rgb(151, 16, 6)!important;
+	font-size:22px;
+	transform: scale(1.2) !important;
+}
+
+.del_spec_trash{
+	color:#dc3545;
+	font-size:22px;
+	cursor: pointer;
+	transition: transform .2s !important;
+}
+.del_spec_trash:hover{
+	color: rgb(151, 16, 6)!important;
+	font-size:22px;
+	transform: scale(1.2) !important;
+}
+
+.edit_pencil{
+	color : rgb(211, 120, 15);
+	font-size:20px;
+	cursor: pointer;
+	transition: transform .2s;
+}
+
+.edit_pencil:hover{
+	color: rgb(197, 98, 5);
+	font-size:20px;
+	transform: scale(1.2);
+}
+
+.edit_spec{
+	color : rgb(211, 120, 15);
+	font-size:20px;
+	cursor: pointer;
+	transition: transform .2s;
+}
+
+.edit_spec:hover{
+	color: rgb(197, 98, 5);
+	font-size:20px;
+	transform: scale(1.2);
+}
+
+.addOptionIcon{
+	font-size:20px;
+	cursor: pointer;
+	margin-left:10px;
+	color:#28a745;
+	transition:transform .2s;
+}
+
+.addOptionIcon:hover{
+	font-size:20px;
+	transform: scale(1.1);
+	color:#098b27;
+}
+
+.radioOptionIcon{
+	font-size:20px;
+	cursor: pointer;
+	margin-left:10px;
+	color:#28a745;
+	transition:transform .2s;
+}
+
+.radioOptionIcon:hover{
+	font-size:20px;
+	transform: scale(1.1);
+	color:#098b27;
+}
+
+.checkboxOptionIcon{
+	font-size:20px;
+	cursor: pointer;
+	margin-left:10px;
+	color:#28a745;
+	transition:transform .2s;
+}
+
+.checkboxOptionIcon:hover{
+	font-size:20px;
+	transform: scale(1.1);
+	color:#098b27;
+}
+
+.more_input{
+	position:relative;
+}
+
+.del_select_optionI{
+	color:#dc3545;
+	font-size:22px;
+	cursor: pointer;
+	transition: transform .2s !important;
+	position:absolute;
+	right:5px;
+	top:10px;
+}
+
+.del_select_optionI:hover{
+	color: rgb(151, 16, 6)!important;
+	font-size:22px;
+	transform: scale(1.2) !important;
+}
+
+.del_radio_optionI{
+	color:#dc3545;
+	font-size:22px;
+	cursor: pointer;
+	transition: transform .2s !important;
+	position:absolute;
+	right:5px;
+	top:10px;
+}
+
+.del_radio_optionI:hover{
+	color: rgb(151, 16, 6)!important;
+	font-size:22px;
+	transform: scale(1.2) !important;
+}
+
+
+.del_checkbox_optionI{
+	color:#dc3545;
+	font-size:22px;
+	cursor: pointer;
+	transition: transform .2s !important;
+	position:absolute;
+	right:5px;
+	top:10px;
+}
+
+.del_checkbox_optionI:hover{
+	color: rgb(151, 16, 6)!important;
+	font-size:22px;
+	transform: scale(1.2) !important;
+}
+
+.deviceObjMaster_scroll{
+    max-height: 300px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.device_select_template:hover{
+	cursor:pointer;
+}
+
+#device_showtemplate_scoll{
+    max-height: 300px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.da-card .da-card-content{
+	background-color: bisque;
+}
+.da-card{
+	transition:transform .2s;
+}
+.da-card:hover{
+	background-color: bisque;
+	transform:scale(1.1);
+	cursor:pointer;
+}
+
+.columnActive{
+	background-color: rgb(0, 204, 17) !important;
+	transform:scale(1.2);
+	cursor:pointer;
+}
+
+
+
+.addColumn{
+	width:80%;
+	margin:0 auto;
+	border:2px #ccc;
+	border-style: dotted;
+	padding:10px;
+}
+
+.addColumnI{
+	cursor:pointer;
+}
+
+/* .titleOut{
+	position:relative;
+} */
+.titleOut:hover{
+	border:1px dotted #ccc;
+	padding:10px;
+}
+
+.titleOut_vtem{
+	position:relative;
+}
+.titleOut_vtem:hover{
+	border:1px dotted #ccc;
+	padding:10px;
+}
+
+/* .inputOut{
+	position:relative;
+} */
+.inputOut:hover{
+	border:1px dotted #ccc;
+	padding:10px;
+}
+
+
+.inputOut_vtem{
+	position:relative;
+}
+.inputOut_vtem:hover{
+	border:1px dotted #ccc;
+	padding:10px;
+}
+
+/* .areaIconInput{
+	position:absolute;
+	top:5;
+	right:20px;
+	border:1px solid #ccc;
+	padding:5px;
+	border-radius: 5px;
+} */
+.areaIconInput_vtem{
+	position:absolute;
+	top:5;
+	right:20px;
+	border:1px solid #ccc;
+	padding:5px;
+	border-radius: 5px;
+}
+.inputIcon{
+	color:#dc3545;
+	font-size:22px;
+	transition: transform .2s;
+}
+.inputIcon:hover{
+	cursor: pointer;
+	color: rgb(151, 16, 6);
+	transform: scale(1.2);
+}
+
+.inputIcon_vtem{
+	color:#dc3545;
+	font-size:22px;
+	transition: transform .2s;
+}
+.inputIcon_vtem:hover{
+	cursor: pointer;
+	color: rgb(151, 16, 6);
+	transform: scale(1.2);
+}
+
+/* .areaIcon{
+	position:absolute;
+	top:5;
+	right:20px;
+	border:1px solid #ccc;
+	padding:5px;
+	border-radius: 5px;
+} */
+.areaIcon_vtem{
+	position:absolute;
+	top:5;
+	right:20px;
+	border:1px solid #ccc;
+	padding:5px;
+	border-radius: 5px;
+}
+.titleIcon{
+	color:#dc3545;
+	font-size:22px;
+	transition: transform .2s;
+}
+.titleIcon:hover{
+	cursor: pointer;
+	color: rgb(151, 16, 6);
+	transform: scale(1.2);
+}
+.titleIconEdit{
+	color : rgb(211, 120, 15);
+	font-size:20px;
+	transition: transform .2s;
+	margin-left:10px;
+}
+.titleIconEdit:hover{
+	color: rgb(197, 98, 5);
+	font-size:20px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+
+
+
+.titleIcon_vtem{
+	color:#dc3545;
+	font-size:22px;
+	transition: transform .2s;
+}
+.titleIcon_vtem:hover{
+	cursor: pointer;
+	color: rgb(151, 16, 6);
+	transform: scale(1.2);
+}
+.titleIconEdit_vtem{
+	color : rgb(211, 120, 15);
+	font-size:20px;
+	transition: transform .2s;
+	margin-left:10px;
+}
+.titleIconEdit_vtem:hover{
+	color: rgb(197, 98, 5);
+	font-size:20px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+
+.inputIconEdit{
+	color : rgb(211, 120, 15);
+	font-size:20px;
+	transition: transform .2s;
+	margin-left:10px;
+}
+.inputIconEdit:hover{
+	color: rgb(197, 98, 5);
+	font-size:20px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+
+.inputIconEdit_vtem{
+	color : rgb(211, 120, 15);
+	font-size:20px;
+	transition: transform .2s;
+	margin-left:10px;
+}
+.inputIconEdit_vtem:hover{
+	color: rgb(197, 98, 5);
+	font-size:20px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
+
+.colAddEle{
+	border:1px dotted #ccc;
+	padding:30px;
+}
+
+.selectbg{
+	background-color: #e9ecef !important;
+    opacity: 1 !important;
+}
+
+/* Dashed border */
+hr.dashed {
+	border-top: 2px dashed #bbb;
+}
+  
+/* Dotted border */
+hr.dotted {
+border-top: 2px dotted #bbb;
+}
+
+/* Solid border */
+hr.solid {
+border-top: 2px solid #bbb;
+}
+
+/* Rounded border */
+hr.rounded {
+border-top: 5px solid #bbb;
+border-radius: 5px;
+}
+
+@media (min-width:1440px){
+	
+}
+@media (min-width:1200px) and (max-width:1439px) {
+	
+}
+@media (min-width:992px) and (max-width:1199px){
+	
+}
+
+@media (min-width:768px) and (max-width:991px){
+	
+}
+
+@media (min-width:576px) and (max-width:767px) {
+
+}
+
+@media (min-width:320px) and (max-width:575px) {
+	#add_newType , #add_newObj{
+		width:100%;
+		margin-bottom:5px;
+	}
+}
+
+
+
+
+/* Template */
+.templateBox{
+	position:relative;
+}
+.templateBoxCard{
+	background-color: rgb(248, 241, 177);
+	transition: transform .2s;
+	min-height:5vw;
+}
+.templateBoxCard:hover{
+	transform:scale(1.1);
+	cursor: pointer;
+}
+
+
+
+#element_order_scroll{
+    max-height: 60vh;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+.arrowMain{
+	position:relative;
+}
+.iconup{
+	font-size:35px;
+	position:absolute;
+	right:45px;
+	top:20px;
+	transition:transform .2s;
+}
+.iconup:hover{
+	transform:scale(1.1);
+	cursor: pointer;
+}
+.icondown{
+	font-size:35px;
+	position:absolute;
+	right:10px;
+	top:20px;
+	transition:transform .2s;
+}
+.icondown:hover{
+	transform:scale(1.1);
+	cursor: pointer;
+}
