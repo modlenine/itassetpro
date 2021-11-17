@@ -47,19 +47,15 @@ class Device_model extends CI_Model {
 
     public function getListComputerDevice()
     {
-        $table = 'its_device_detail';
-        $primaryKey = 'dv_autoid';
+        $table = 'DeviceComputer';
+        $primaryKey = 'ComputerNumber';
         $columns = array(
-            array('db' => 'dv_code', 'dt' => 0),
-            array('db' => 'dv_code', 'dt' => 1),
-            array('db' => 'dv_code', 'dt' => 2),
-            array('db' => 'dv_code', 'dt' => 3),
-            array('db' => 'dv_code', 'dt' => 4),
-            array('db' => 'dv_code', 'dt' => 5,
-                'formatter' => function($d,$row){
-                    return '<button type="button" class="btn btn-primary">Primary</button>';
-                }
-            )
+            array('db' => 'ComputerNumber', 'dt' => 0),
+            array('db' => 'ComputerType', 'dt' => 1),
+            array('db' => 'ComputerBrand', 'dt' => 2),
+            array('db' => 'ComputerSpec', 'dt' => 3),
+            array('db' => 'dv_datetime', 'dt' => 4),
+            array('db' => 'ComputerStatus', 'dt' => 5)
         );
 
         $sql_details = array(
@@ -111,6 +107,96 @@ class Device_model extends CI_Model {
     }
 
 
+    public function device_load_data_detail()
+
+    // SELECT
+    //     its_device_detail.dv_autoid,
+    //     its_device_detail.dv_templatename,
+    //     its_device_detail.dv_type,
+    //     its_device_detail.dv_ele_type,
+    //     its_device_detail.dv_title,
+    //     its_device_detail.dv_inputname,
+    //     its_device_detail.dv_inputvalue,
+    //     its_device_detail.dv_elesub_type,
+    //     its_device_detail.dv_inputcolumnsize,
+    //     its_device_detail.dv_linenum
+    // FROM its_device_detail
+
+    {
+        
+        if($this->input->post("data_deviceCode")){
+            $data_deviceCode = $this->input->post("data_deviceCode");
+            $sql = $this->db->query("SELECT
+            -- its_template_master.tp_mas_autoid,
+            -- its_template_master.tp_mas_name,
+            -- its_template_master.tp_mas_type,
+            -- its_template_master.tp_mas_arraykey,
+            -- its_template_master.tp_mas_title_size,
+            -- its_template_master.tp_mas_title_text,
+            -- its_template_master.tp_mas_inputname,
+            -- its_template_master.tp_mas_inputtype,
+            -- its_template_master.tp_mas_inputcolumnsize,
+            -- its_template_master.tp_mas_inputtemptype,
+            -- its_template_master.tp_mas_inputmascode,
+            -- its_template_master.tp_mas_inputoption,
+            -- its_template_master.tp_mas_linenum,
+            -- its_template_master.tp_mas_userpost,
+            -- its_template_master.tp_mas_ecodepost,
+            -- its_template_master.tp_mas_datetime
+            its_device_detail.dv_autoid,
+            its_device_detail.dv_templatename,
+            its_device_detail.dv_type,
+            its_device_detail.dv_ele_type,
+            its_device_detail.dv_title,
+            its_device_detail.dv_titlesize,
+            its_device_detail.dv_inputname,
+            its_device_detail.dv_inputvalue,
+            its_device_detail.dv_elesub_type,
+            its_device_detail.dv_inputcolumnsize,
+            its_device_detail.dv_linenum
+            FROM
+            its_device_detail
+            WHERE dv_code = '$data_deviceCode' ");
+            $output ='';
+            foreach($sql->result() as $key => $val){
+                if($val->dv_ele_type == "title"){
+                    $output = array(
+                        'data_type' => $val->dv_ele_type,
+                        'title_size' => $val->dv_titlesize,
+                        'title_text' => $val->dv_title,
+                        'autoid' => $val->dv_autoid,
+                        'linenum' => $val->dv_linenum
+                    );
+                }else if($val->dv_ele_type == "inputData"){
+                    // if($val->tp_mas_inputoption != ""){
+                    //     $inputoption = json_decode($val->tp_mas_inputoption);
+                    // }else{
+                    //     $inputoption = "";
+                    // }
+                    $output = array(
+                        'data_type' => $val->dv_ele_type,
+                        'inputname' => $val->dv_inputname,
+                        'templatename' => $val->dv_templatename,
+                        'inputvalue' => $val->dv_inputvalue,
+                        'inputtype' => $val->dv_elesub_type,
+                        'inputcolumnsize' => $val->dv_inputcolumnsize,
+                        'inputtemptype' => "COMPUTER",
+                        'inputmascode' => "",
+                        'inputoption' => "",
+                        'autoid' => $val->dv_autoid,
+                        'linenum' => $val->dv_linenum
+                    );
+                }
+
+                $arrayOutput[] = $output;
+                
+            }
+
+            echo json_encode($arrayOutput);
+        }
+    }
+
+
 
     public function device_load_data_template()
     {
@@ -136,7 +222,7 @@ class Device_model extends CI_Model {
             its_template_master.tp_mas_datetime
             FROM
             its_template_master
-            WHERE tp_mas_name = '$templatename' ");
+            WHERE tp_mas_name = '$templatename' ORDER BY tp_mas_linenum ASC");
             $output ='';
             foreach($sql->result() as $key => $val){
                 if($val->tp_mas_arraykey == "title"){
@@ -258,6 +344,43 @@ class Device_model extends CI_Model {
         }
 
         echo json_encode($output);
+    }
+
+
+    
+
+    public function load_data(){
+
+        if($this->input->post("dv_inputname") != ""){
+            
+            $dv_templatename = $this->input->post("dv_templatename");
+            $dv_inputname = $this->input->post("dv_inputname");
+
+            $sql = $this->db->query("SELECT * FROM
+            its_template_master
+            WHERE tp_mas_name = '$dv_templatename' AND tp_mas_inputname = '$dv_inputname' ORDER BY tp_mas_linenum ASC");
+
+            echo $sql->row()->tp_mas_inputoption;
+
+            // foreach($sql->result() as $key => $val){
+            //     if($val->tp_mas_arraykey == "inputData"){
+            //         if($val->tp_mas_inputoption != ""){
+            //             $inputoption = json_decode($val->tp_mas_inputoption);
+            //         }else{
+            //             $inputoption = "";
+            //         }
+            //         $output = array(
+            //             'inputoption' => $inputoption
+            //         );
+            //     }
+
+            //     $arrayOutput[] = $output;
+            // }
+
+        }
+
+        // echo json_encode($output);
+
     }
     
     

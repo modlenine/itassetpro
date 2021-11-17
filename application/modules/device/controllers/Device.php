@@ -37,6 +37,18 @@ class Device extends MY_Controller {
 
     /// 09-11-2564 ///
 
+    public function detail($devicecode)
+    {
+        $data = array(
+            "pagename"=>$devicecode
+        );
+        getHead();
+        getSidebar();
+        getNavbar();
+        getContent("devicedetail",$data);
+        getFooter();
+    }
+
     public function load_datatableComputer()
     {
         $this->device->load_datatableComputer();
@@ -64,6 +76,11 @@ class Device extends MY_Controller {
     public function device_load_data_template()
     {
         $this->device->device_load_data_template();
+    }
+
+    public function device_load_data_detail()
+    {
+        $this->device->device_load_data_detail();
     }
 
 
@@ -108,6 +125,13 @@ class Device extends MY_Controller {
         echo "ผลลัพท์หลังจากย้าย Array แล้ว ";
         print_r($output);
     }
+
+    public function load_data()
+    {
+        $this->device->load_data();
+    }
+
+    
 
 
 }
