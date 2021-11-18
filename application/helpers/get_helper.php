@@ -289,3 +289,10 @@ function geDeviceCode($device_type)
 }
 
 
+
+function loadoptionFromTemplate()
+{
+    
+}
+
+

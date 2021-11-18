@@ -108,41 +108,11 @@ class Device_model extends CI_Model {
 
 
     public function device_load_data_detail()
-
-    // SELECT
-    //     its_device_detail.dv_autoid,
-    //     its_device_detail.dv_templatename,
-    //     its_device_detail.dv_type,
-    //     its_device_detail.dv_ele_type,
-    //     its_device_detail.dv_title,
-    //     its_device_detail.dv_inputname,
-    //     its_device_detail.dv_inputvalue,
-    //     its_device_detail.dv_elesub_type,
-    //     its_device_detail.dv_inputcolumnsize,
-    //     its_device_detail.dv_linenum
-    // FROM its_device_detail
-
     {
         
         if($this->input->post("data_deviceCode")){
             $data_deviceCode = $this->input->post("data_deviceCode");
             $sql = $this->db->query("SELECT
-            -- its_template_master.tp_mas_autoid,
-            -- its_template_master.tp_mas_name,
-            -- its_template_master.tp_mas_type,
-            -- its_template_master.tp_mas_arraykey,
-            -- its_template_master.tp_mas_title_size,
-            -- its_template_master.tp_mas_title_text,
-            -- its_template_master.tp_mas_inputname,
-            -- its_template_master.tp_mas_inputtype,
-            -- its_template_master.tp_mas_inputcolumnsize,
-            -- its_template_master.tp_mas_inputtemptype,
-            -- its_template_master.tp_mas_inputmascode,
-            -- its_template_master.tp_mas_inputoption,
-            -- its_template_master.tp_mas_linenum,
-            -- its_template_master.tp_mas_userpost,
-            -- its_template_master.tp_mas_ecodepost,
-            -- its_template_master.tp_mas_datetime
             its_device_detail.dv_autoid,
             its_device_detail.dv_templatename,
             its_device_detail.dv_type,
@@ -156,7 +126,7 @@ class Device_model extends CI_Model {
             its_device_detail.dv_linenum
             FROM
             its_device_detail
-            WHERE dv_code = '$data_deviceCode' ");
+            WHERE dv_code = '$data_deviceCode' ORDER BY dv_linenum ASC");
             $output ='';
             foreach($sql->result() as $key => $val){
                 if($val->dv_ele_type == "title"){
@@ -180,8 +150,7 @@ class Device_model extends CI_Model {
                         'inputvalue' => $val->dv_inputvalue,
                         'inputtype' => $val->dv_elesub_type,
                         'inputcolumnsize' => $val->dv_inputcolumnsize,
-                        'inputtemptype' => "COMPUTER",
-                        'inputmascode' => "",
+                        'inputtemptype' => $val->dv_type,
                         'inputoption' => "",
                         'autoid' => $val->dv_autoid,
                         'linenum' => $val->dv_linenum
@@ -277,6 +246,7 @@ class Device_model extends CI_Model {
             $dv_inputvalue = '';
             $dv_inputcolumnsize = '';
             $dv_elesub_type = '';
+            $dv_inputoption = '';
 
             foreach($check_linenum as $key => $check_linenums){
                 // Check input element type
@@ -301,14 +271,18 @@ class Device_model extends CI_Model {
 
                     if($this->input->post("check_elesub_type_".$check_linenums) == "radio"){
                         $dv_inputvalue = $this->input->post("radio_".$check_linenums);
+                        $conOptionTOarray = explode(",",$this->input->post("radioOption_".$check_linenums));
+                        $dv_inputoption = json_encode($conOptionTOarray);
                         // $dv_inputvalue = $check_linenums;
                     }else if($this->input->post("check_elesub_type_".$check_linenums) == "checkbox"){
                         $dv_inputvalue = $this->input->post("checkbox_".$check_linenums);
                         $dv_inputvalue = $check_linenums;
+                        $dv_inputoption = '';
                     }else if($this->input->post("check_elesub_type_".$check_linenums) == "text"){
                         $dv_inputvalue = $this->input->post("inputvalue_".$check_linenums);
                     }else if($this->input->post("check_elesub_type_".$check_linenums) == "select"){
                         $dv_inputvalue = $this->input->post("select_".$check_linenums);
+                        $dv_inputoption = '';
                     }
                 }
 
@@ -320,6 +294,7 @@ class Device_model extends CI_Model {
                     "dv_titlesize" => $dv_titlesize,
                     "dv_inputname" => $dv_inputname,
                     "dv_inputvalue" => $dv_inputvalue,
+                    "dv_inputoption" => $dv_inputoption,
                     "dv_inputcolumnsize" => $dv_inputcolumnsize,
                     "dv_type" => $this->input->post("device_type"),
                     "dv_templatename" => $this->input->post("device_template"),

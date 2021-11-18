@@ -56,14 +56,6 @@
 
                 for(let i =0; i < data.length;i++){
 
-                    if(data[i].inputtype=="radio" || data[i].inputtype=="checkbox"){
-
-                        load_data(data[i].templatename,data[i].inputname);
-
-                    }else{
-                        
-                        continue;
-                    }
                     
                     if(data[i].data_type == "title"){
                     output += `
@@ -114,8 +106,7 @@
                             </select>`;
                     }else if(data[i].inputtype == "radio"){
                         // loadOptionRadio(layout[i].inputData.inputname);
-                        let check_option = $('#check_option').val();
-                        console.log(check_option);
+ 
                         output +=`
                             <label>`+data[i].inputname+`</label>
                             <input type="hidden" id="check_ele_type" name="check_ele_type[]" value="`+data[i].data_type+`">
@@ -182,8 +173,7 @@
             data:{dv_templatename:dv_templatename,dv_inputname:dv_inputname},
             beforeSend:function(){},
             success:function(res){
-                // console.log(JSON.parse(res));
-                $('#check_option').val(res);
+                console.log(JSON.parse(res));
             }
         });
     }

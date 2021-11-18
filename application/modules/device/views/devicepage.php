@@ -256,6 +256,7 @@ $(document).ready(function() {
                                 <input type="hidden" id="check_elesub_type" name="check_elesub_type_`+data[i].linenum+`" value="`+data[i].inputtype+`">
                                 <input type="hidden" id="check_ele_linenum" name="check_ele_linenum[]" value="`+data[i].linenum+`">
                                 <input type="hidden" id="label_`+data[i].inputmascode+`" name="labelvalue_`+data[i].linenum+`" value="`+data[i].inputname+`">
+                                <input type="text" id="radioOption_`+data[i].inputmascode+`" name="radioOption_`+data[i].linenum+`" value="`+data[i].inputoption+`">
                                 <div id="divRadio_`+data[i].inputmascode+`" class="form-inline">`;
                                 for(let j =0;j<data[i].inputoption.length;j++){
                                     output +=`
