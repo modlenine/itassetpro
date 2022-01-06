@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Device : <?=$devicecode?></title>
 </head>
 <body>
     <div class="main-container">
-        <input  type="text" name="check_option" id="check_option">
+
+    <input type="text" name="data_deviceCode" id="data_deviceCode" value="<?=$devicecode?>">
         <div class="pd-ltr-20">
             <div class="card-box pd-20 mb-30">
                 <div class="row align-items-center form-group">
@@ -33,13 +34,11 @@
 
 <script>
     $(document).ready(function() {
-        // const data_deviceCode = 'Computer'
-        const data_deviceCode = 'COM0001'
-        device_load_data_template(data_deviceCode);
-        // load_data('Computer','Brand');
+        const data_deviceCode = $('#data_deviceCode').val();
+        device_load_data_detail(data_deviceCode);
     });
 
-    function device_load_data_template(data_deviceCode)
+    function device_load_data_detail(data_deviceCode)
     {
         $.ajax({
             url:"/intsys/itassetpro/device/device_load_data_detail",
@@ -98,10 +97,10 @@
                             <input type="hidden" id="check_ele_linenum" name="check_ele_linenum[]" value="`+data[i].linenum+`">
                             <input type="hidden" id="label_`+data[i].inputmascode+`" name="labelvalue_`+data[i].linenum+`" value="`+data[i].inputname+`">
                             <select id="inputSelect_`+data[i].inputmascode+`" name="select_`+data[i].linenum+`" class="form-control">`;
-                            for(let j =0;j<data[i].inputoption.length;j++){
+                    
                                 output +=`
-                                <option value="`+data[i].inputoption[j]+`">`+data[i].inputoption[j]+`</option>`;
-                            }
+                                <option value="`+data[i].inputvalue+`">`+data[i].inputvalue+`</option>`;
+                            
                         output +=`
                             </select>`;
                     }else if(data[i].inputtype == "radio"){
@@ -120,9 +119,16 @@
                             // load_data('Computer','Brand');
 
                             for(let j =0;j<data[i].inputoption.length;j++){
+                                let checkedmark = '';
+                                if(data[i].inputvalue == data[i].inputoption[j]){
+                                    checkedmark = 'checked';
+                                }else{
+                                    checkedmark= '';
+                                }
+
                                 output +=`
                                 <div class="custom-control custom-radio mb-5">
-                                    <input type="radio" id="inputRadio_`+data[i].inputmascode+j+`" name="radio_`+data[i].linenum+`" class="custom-control-input" value="`+data[i].inputoption[j]+`">
+                                    <input type="radio" id="inputRadio_`+data[i].inputmascode+j+`" name="radio_`+data[i].linenum+`" class="custom-control-input" value="`+data[i].inputoption[j]+`" `+checkedmark+`>
                                     <label class="custom-control-label" for="inputRadio_`+data[i].inputmascode+j+`">`+data[i].inputoption[j]+`</label>
                                 </div>`;
                             }

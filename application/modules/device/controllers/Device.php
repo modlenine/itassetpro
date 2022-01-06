@@ -40,7 +40,7 @@ class Device extends MY_Controller {
     public function detail($devicecode)
     {
         $data = array(
-            "pagename"=>$devicecode
+            "devicecode"=>$devicecode
         );
         getHead();
         getSidebar();

@@ -50,7 +50,15 @@ class Device_model extends CI_Model {
         $table = 'DeviceComputer';
         $primaryKey = 'ComputerNumber';
         $columns = array(
-            array('db' => 'ComputerNumber', 'dt' => 0),
+            array(
+                'db' => 'ComputerNumber', 'dt' => 0,
+                'formatter' => function($d , $row){
+                    $output = '
+                    <a href="'.base_url('device/detail/').$d.'"><b>'.$d.'</b></a>
+                    ';
+                    return $output;
+                }
+            ),
             array('db' => 'ComputerType', 'dt' => 1),
             array('db' => 'ComputerBrand', 'dt' => 2),
             array('db' => 'ComputerSpec', 'dt' => 3),
@@ -123,7 +131,8 @@ class Device_model extends CI_Model {
             its_device_detail.dv_inputvalue,
             its_device_detail.dv_elesub_type,
             its_device_detail.dv_inputcolumnsize,
-            its_device_detail.dv_linenum
+            its_device_detail.dv_linenum,
+            its_device_detail.dv_inputoption
             FROM
             its_device_detail
             WHERE dv_code = '$data_deviceCode' ORDER BY dv_linenum ASC");
@@ -138,11 +147,11 @@ class Device_model extends CI_Model {
                         'linenum' => $val->dv_linenum
                     );
                 }else if($val->dv_ele_type == "inputData"){
-                    // if($val->tp_mas_inputoption != ""){
-                    //     $inputoption = json_decode($val->tp_mas_inputoption);
-                    // }else{
-                    //     $inputoption = "";
-                    // }
+                    if($val->dv_inputoption != ""){
+                        $inputoption = json_decode($val->dv_inputoption);
+                    }else{
+                        $inputoption = "";
+                    }
                     $output = array(
                         'data_type' => $val->dv_ele_type,
                         'inputname' => $val->dv_inputname,
@@ -151,7 +160,7 @@ class Device_model extends CI_Model {
                         'inputtype' => $val->dv_elesub_type,
                         'inputcolumnsize' => $val->dv_inputcolumnsize,
                         'inputtemptype' => $val->dv_type,
-                        'inputoption' => "",
+                        'inputoption' => $inputoption,
                         'autoid' => $val->dv_autoid,
                         'linenum' => $val->dv_linenum
                     );
@@ -280,8 +289,11 @@ class Device_model extends CI_Model {
                         $dv_inputoption = '';
                     }else if($this->input->post("check_elesub_type_".$check_linenums) == "text"){
                         $dv_inputvalue = $this->input->post("inputvalue_".$check_linenums);
+                        $dv_inputoption = '';
                     }else if($this->input->post("check_elesub_type_".$check_linenums) == "select"){
                         $dv_inputvalue = $this->input->post("select_".$check_linenums);
+                        $dv_inputoption = '';
+                    }else{
                         $dv_inputoption = '';
                     }
                 }
