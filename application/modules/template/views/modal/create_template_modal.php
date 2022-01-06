@@ -396,10 +396,13 @@
 
 <script>
     var inputType = [];
+    let linenum = 0;
+    let layout = [];
+
     $(document).ready(function(){
 
-    let layout = [];
-    let linenum = 0;
+
+
     loadLayout(layout);
     loadTemplateType();
 
@@ -518,7 +521,8 @@
 
             let dataTitle = {
                 "title":title,
-                "linenum":linenum
+                "linenum":linenum,
+                "group":"detaildata"
             };
             // loadLayout(layout);
             layout.push(dataTitle);
@@ -678,7 +682,7 @@
         $(document).on('change' , '#tem_chooseTemType' , function(){
             const templateType = $('#tem_chooseTemType').val();
             loadInput(templateType);
-            
+            loadMasterData_toTemplate(templateType);
         });
 
 
@@ -776,7 +780,8 @@
                     "inputtemptype":inputtemptype,
                     "inputmascode":inputmascode
                     },
-                "linenum":linenum
+                "linenum":linenum,
+                "group":"detaildata"
                 }
             }else{
                 dataInput = {
@@ -787,7 +792,8 @@
                     "inputtemptype":inputtemptype,
                     "inputmascode":inputmascode
                     },
-                "linenum":linenum
+                "linenum":linenum,
+                "group":"detaildata"
                 }
             }
 
@@ -978,13 +984,12 @@
 
 
             }
+            
             $('#showLayout').html(output);
         }else{
             $('#showLayout').html(output);
         }
-
         // $('#templateCode').val(layout);
-
     }
 
 
@@ -1001,6 +1006,8 @@
             }
         });
     }
+
+
 
     function loadInput(templateType)
     {
@@ -1019,24 +1026,53 @@
         });
     }
 
-    // function search_table(value){  
-    //     $('#showInput .da-card-content').each(function(){  
-    //             var found = 'false';  
-    //             $(this).each(function(){  
-    //                 if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)  
-    //                 {  
-    //                     found = 'true';  
-    //                 }  
-    //             });  
-    //             if(found == 'true')  
-    //             {  
-    //                 $(this).show();  
-    //             }  
-    //             else  
-    //             {  
-    //                 $(this).hide();  
-    //             }  
-    //     });  
-    // }
+
+
+    function loadMasterData_toTemplate(templateType)
+    {
+        $.ajax({
+            url:"/intsys/itassetpro/template/manageobj/loadMasterData_toTemplate",
+            method:"POST",
+            data:{
+                templateType:templateType
+            },
+            beforeSend:function(){},
+            success:function(res){
+                console.log(JSON.parse(res));
+                const data = JSON.parse(res);
+                for(let i=0;i<data.length;i++){
+                    if(data[i].data_type == "title"){
+                        let title = {
+                            'title_size':data[i].title_size,
+                            'title_text':data[i].title_text
+                        }
+                        linenum++;
+                        let dataTitle ={
+                            "title":title,
+                            "linenum":linenum,
+                            "group":data[i].ele_group
+                        }
+                        layout.push(dataTitle);
+                    }else{
+                        linenum++;
+                        let dataInput = {
+                        "inputData":{
+                            "inputname":data[i].inputname,
+                            "inputtype":data[i].inputtype,
+                            "inputcolumnsize":data[i].columnsize,
+                            "inputoption":data[i].inputoption,
+                            "inputtemptype":data[i].ele_type,
+                            "inputmascode":data[i].inputmascode
+                            },
+                        "linenum":linenum,
+                        "group":data[i].ele_group
+                        }
+                        layout.push(dataInput);
+                    }
+                }
+                loadLayout(layout);
+            }
+        });
+    }
 
 </script>

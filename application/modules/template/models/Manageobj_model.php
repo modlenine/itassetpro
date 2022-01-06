@@ -460,6 +460,76 @@ class Manageobj_model extends CI_Model {
 
 
 
+
+    public function loadInput_masterdata()
+    {
+        if($this->input->post("templateType")){
+            $templateType = $this->input->post("templateType");
+            
+
+            $get_masterdata_input = $this->db->query("SELECT masD_inputmascode FROM its_master_data WHERE masD_type = '$templateType' AND masD_ele_type = 'inputData' ");
+
+            $outputMasCode = "";
+            $checkComma = 1;
+            foreach($get_masterdata_input->result() as $rss){
+                if($checkComma == 1){
+                    $outputMasCode .= '"'.$rss->masD_inputmascode.'"';
+                }else{
+                    $outputMasCode .= ',"'.$rss->masD_inputmascode.'"';
+                }
+                $checkComma++;
+            }
+
+            if($outputMasCode == ""){
+                $sqlCodeNotin = "";
+            }else{
+                $sqlCodeNotin = 'AND obj_mas_code NOT IN ('.$outputMasCode.')';
+            }
+
+
+            $sql = $this->db->query("SELECT obj_mas_name , obj_mas_type , obj_mas_eletype , obj_mas_code FROM its_obj_master WHERE obj_mas_type = '$templateType' $sqlCodeNotin ORDER BY obj_mas_name ASC");
+
+            if($sql->num_rows() != 0){
+                foreach($sql->result() as $rs){
+
+
+                    if($rs->obj_mas_eletype != "text"){
+                        $arrayOutput = array(
+                            "obj_mas_code" => $rs->obj_mas_code,
+                            "obj_mas_name" => $rs->obj_mas_name,
+                            "obj_mas_type" => $rs->obj_mas_type,
+                            "obj_mas_eletype" => $rs->obj_mas_eletype,
+                            "obj_mas_option" => getOptionInput($rs->obj_mas_code)
+                        );
+                    }else{
+                        $arrayOutput = array(
+                            "obj_mas_code" => $rs->obj_mas_code,
+                            "obj_mas_name" => $rs->obj_mas_name,
+                            "obj_mas_type" => $rs->obj_mas_type,
+                            "obj_mas_eletype" => $rs->obj_mas_eletype
+                        );
+                    }
+
+                    
+                    
+                    $output[]=$arrayOutput;
+                }
+            }else{
+                $output = array(
+                    "msg" => "Not found data",
+                    "status" => "Not found data"
+                );
+            }
+
+            echo json_encode($output);
+
+        }
+        
+        
+    }
+
+
+
     public function deleteDeviceType()
     {
         if($this->input->post("data_objtypeautoid") != ""){
@@ -596,6 +666,7 @@ class Manageobj_model extends CI_Model {
                         "tp_mas_title_size" => $templatecode[$i]['title']['title_size'],
                         "tp_mas_title_text" => $templatecode[$i]['title']['title_text'],
                         "tp_mas_linenum" => $templatecode[$i]['linenum'],
+                        "tp_mas_group" => $templatecode[$i]['group'],
                         "tp_mas_userpost" => getUser()->Fname." ".getUser()->Lname,
                         "tp_mas_ecodepost" => getUser()->ecode,
                         "tp_mas_datetime" => date("Y-m-d H:i:s")
@@ -624,6 +695,7 @@ class Manageobj_model extends CI_Model {
                         "tp_mas_inputmascode" => $templatecode[$i]['inputData']['inputmascode'],
                         "tp_mas_inputoption" => $output_option,
                         "tp_mas_linenum" => $templatecode[$i]['linenum'],
+                        "tp_mas_group" => $templatecode[$i]['group'],
 
                         "tp_mas_userpost" => getUser()->Fname." ".getUser()->Lname,
                         "tp_mas_ecodepost" => getUser()->ecode,
@@ -642,6 +714,80 @@ class Manageobj_model extends CI_Model {
            echo json_encode($output_res);
         }
     }
+
+
+
+
+    public function saveMasterData()
+    {
+        if($this->input->post("masD_deviceType") != ""){
+            $masD_deviceType = $this->input->post("masD_deviceType");
+            $masterdata_layout = $this->input->post("masterdata_layout");
+
+            // Delete Master Data
+            $this->db->where("masD_type" , $masD_deviceType);
+            $this->db->delete("its_master_data");
+
+            $validateLinenum = 0;
+           for($i=0;$i<count($masterdata_layout);$i++){
+                $validateLinenum++;
+               if(isset($masterdata_layout[$i]['title'])){
+
+                    // echo $templatecode[$i]['title']['title_size']." ".$templatecode[$i]['title']['title_text'];
+                    $arrayTitle = array(
+                        "masD_type" => $masD_deviceType,
+                        "masD_ele_type" => "title",
+                        "masD_titlesize" => $masterdata_layout[$i]['title']['title_size'],
+                        "masD_title" => $masterdata_layout[$i]['title']['title_text'],
+                        // "masD_linenum" => $masterdata_layout[$i]['linenum'],
+                        "masD_linenum" => $validateLinenum,
+                        "masD_group" => "masterdata",
+                        "masD_userpost" => getUser()->Fname." ".getUser()->Lname,
+                        "masD_ecodepost" => getUser()->ecode,
+                        "masD_datetime" => date("Y-m-d H:i:s")
+                    );
+                    $this->db->insert("its_master_data" , $arrayTitle);
+
+               }else if(isset($masterdata_layout[$i]['inputData'])){
+
+                    // echo $templatecode[$i]['inputData']['inputname']." ".$templatecode[$i]['inputData']['inputtype']." ".$templatecode[$i]['inputData']['inputcolumnsize']." ".$templatecode[$i]['inputData']['inputtemptype']." ".$templatecode[$i]['inputData']['inputmascode'];
+
+                    $output_option = '';
+                    if(isset($masterdata_layout[$i]['inputData']['inputoption'])){
+                        $option = $masterdata_layout[$i]['inputData']['inputoption'];
+                        $output_option = json_encode($option); 
+                    }
+
+                    $arrayInput = array(
+                        "masD_type" => $masD_deviceType,
+                        "masD_ele_type" => "inputData",
+                        "masD_inputname" => $masterdata_layout[$i]['inputData']['inputname'],
+                        "masD_elesub_type" => $masterdata_layout[$i]['inputData']['inputtype'],
+                        "masD_inputcolumnsize" => $masterdata_layout[$i]['inputData']['inputcolumnsize'],
+                        "masD_inputoption" => $output_option,
+                        // "masD_linenum" => $masterdata_layout[$i]['linenum'],
+                        "masD_linenum" => $validateLinenum,
+                        "masD_group" => "masterdata",
+                        "masD_inputmascode" => $masterdata_layout[$i]['inputData']['inputmascode'],
+
+                        "masD_userpost" => getUser()->Fname." ".getUser()->Lname,
+                        "masD_ecodepost" => getUser()->ecode,
+                        "masD_datetime" => date("Y-m-d H:i:s")
+                    );
+                    $this->db->insert("its_master_data" , $arrayInput);
+
+                }
+    
+           }
+           $output_res = array(
+               "msg" => "บันทึกข้อมูลเรียบร้อยแล้ว",
+               "status" => "Insert Success"
+           );
+
+           echo json_encode($output_res);
+        }
+    }
+
 
 
 
@@ -1071,6 +1217,87 @@ class Manageobj_model extends CI_Model {
         }
 
         echo json_encode($output);
+    }
+
+
+
+    public function masD_loadDeviceType()
+    {
+        $sql = $this->db->query("SELECT objtype_name FROM its_obj_type ORDER BY objtype_name ASC");
+        $output = '<select name="masD_deviceType" id="masD_deviceType" class="form-control">';
+        $output .='<option value="">Please Choose Device Type</option>';
+        foreach($sql->result() as $rs){
+            $output .='<option value="'.$rs->objtype_name.'">'.$rs->objtype_name.'</option>';
+        }
+        $output .='</select>';
+
+        echo $output;
+    }
+
+
+
+    public function loadMasterData_toTemplate()
+    {
+        if($this->input->post("templateType") != ""){
+            $templateType = $this->input->post("templateType");
+            $sql = $this->db->query("SELECT
+            its_master_data.masD_id,
+            its_master_data.masD_type,
+            its_master_data.masD_ele_type,
+            its_master_data.masD_elesub_type,
+            its_master_data.masD_title,
+            its_master_data.masD_titlesize,
+            its_master_data.masD_inputname,
+            its_master_data.masD_inputvalue,
+            its_master_data.masD_inputoption,
+            its_master_data.masD_inputcolumnsize,
+            its_master_data.masD_linenum,
+            its_master_data.masD_inputmascode,
+            its_master_data.masD_group
+            FROM
+            its_master_data
+            WHERE masD_type = '$templateType' ORDER BY masD_linenum ASC");
+
+            if($sql->num_rows() != 0){
+                foreach($sql->result() as $key => $value){
+                    if($value->masD_ele_type == "title"){
+                        $masArray = array(
+                            "data_type" => $value->masD_ele_type,
+                            "ele_type" => $value->masD_type,
+                            "title_text" => $value->masD_title,
+                            "title_size" => $value->masD_titlesize,
+                            "linenum" => $value->masD_linenum,
+                            "ele_group" => $value->masD_group,
+                            "autoid" => $value->masD_id
+                        );
+                    }else{
+                        $masArray = array(
+                            "data_type" => $value->masD_ele_type,
+                            "ele_type" => $value->masD_type,
+                            "inputtype" => $value->masD_elesub_type,
+                            "inputname" => $value->masD_inputname,
+                            "inputoption" => json_decode($value->masD_inputoption),
+                            "columnsize" => $value->masD_inputcolumnsize,
+                            "linenum" => $value->masD_linenum,
+                            "ele_group" => $value->masD_group,
+                            "inputmascode" => $value->masD_inputmascode,
+                            "autoid" => $value->masD_id
+                        );
+                    }
+    
+                    $result[] = $masArray;
+                }
+    
+                
+            }else{
+                $result = [];
+            }
+
+            echo json_encode($result);
+
+            
+            
+        }
     }
     
 

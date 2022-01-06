@@ -69,6 +69,11 @@ class Manageobj extends MX_Controller {
     {
         $this->mgrobj->loadInput();
     }
+
+    public function loadInput_masterdata()
+    {
+        $this->mgrobj->loadInput_masterdata();
+    }
     
 
     // public function loadOption()
@@ -106,9 +111,28 @@ class Manageobj extends MX_Controller {
         $this->mgrobj->saveTemplate();
     }
 
+    public function saveMasterData()
+    {
+        $this->mgrobj->saveMasterData();
+    }
+
     public function test()
     {
-        getOptionInput("Port");
+        $get_masterdata_input = $this->db->query("SELECT masD_inputmascode FROM its_master_data WHERE masD_type = 'computer' AND masD_ele_type = 'inputData' ");
+
+            $output = "";
+            $checkComma = 1;
+            foreach($get_masterdata_input->result() as $rss){
+                if($checkComma == 1){
+                    $output .= '"'.$rss->masD_inputmascode.'"';
+                }else{
+                    $output .= ',"'.$rss->masD_inputmascode.'"';
+                }
+                $checkComma++;
+            }
+
+            echo $output;
+
     }
 
     public function loadTemplateList()
@@ -184,6 +208,17 @@ class Manageobj extends MX_Controller {
     public function updatelinenum_down()
     {
         $this->mgrobj->updatelinenum_down();
+    }
+
+    public function masD_loadDeviceType()
+    {
+        $this->mgrobj->masD_loadDeviceType();
+    }
+
+
+    public function loadMasterData_toTemplate()
+    {
+        $this->mgrobj->loadMasterData_toTemplate();
     }
 
 

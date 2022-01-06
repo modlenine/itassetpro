@@ -493,3 +493,28 @@ border-radius: 5px;
 	transform:scale(1.1);
 	cursor: pointer;
 }
+
+
+
+.inputIconDel_mas{
+	color:#dc3545;
+	font-size:22px;
+	transition: transform .2s;
+}
+.inputIconDel_mas:hover{
+	cursor: pointer;
+	color: rgb(151, 16, 6);
+	transform: scale(1.2);
+}
+.inputIconEdit_mas{
+	color : rgb(211, 120, 15);
+	font-size:20px;
+	transition: transform .2s;
+	margin-left:10px;
+}
+.inputIconEdit_mas:hover{
+	color: rgb(197, 98, 5);
+	font-size:20px;
+	transform: scale(1.2);
+	cursor: pointer;
+}
